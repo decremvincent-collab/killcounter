@@ -3,10 +3,11 @@ from TikTokLive import TikTokLiveClient
 from TikTokLive.events import GiftEvent
 import threading
 
+# Initialisation du serveur Flask
 app = Flask(__name__)
 kill_count = 0
 
-# Compte TikTok de 징니ゃ♡
+# Client TikTok pour 징니ゃ♡
 client = TikTokLiveClient(unique_id="im_jingni_ya")
 
 # Configuration des cadeaux (+ / -)
@@ -26,23 +27,25 @@ gift_actions = {
     "방종쉴드": 0
 }
 
-@client.on("gift")
+# Événement cadeau
+@client.on(GiftEvent)
 async def on_gift(event: GiftEvent):
     global kill_count
     name = event.gift.name
     if name in gift_actions:
         kill_count += gift_actions[name]
 
+# Route Flask pour afficher le compteur
 @app.route("/kills")
 def kills():
     return jsonify({"kills": kill_count})
 
+# Lancer le client TikTok dans un thread séparé
 def run_tiktok():
     client.run()
 
 threading.Thread(target=run_tiktok).start()
 
+# Lancer le serveur Flask (Render exige host=0.0.0.0)
 if __name__ == "__main__":
-    # Flask écoute sur toutes les interfaces (Render exige host=0.0.0.0)
     app.run(host="0.0.0.0", port=5000)
-
