@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from TikTokLive import TikTokLiveClient
-from TikTokLive.types.events import GiftEvent
+from TikTokLive.events import GiftEvent
 import threading
 
 app = Flask(__name__)
