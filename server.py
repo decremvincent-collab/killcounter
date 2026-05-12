@@ -41,3 +41,8 @@ def run_tiktok():
     client.run()
 
 threading.Thread(target=run_tiktok).start()
+
+if __name__ == "__main__":
+    # Flask écoute sur toutes les interfaces (Render exige host=0.0.0.0)
+    app.run(host="0.0.0.0", port=5000)
+
